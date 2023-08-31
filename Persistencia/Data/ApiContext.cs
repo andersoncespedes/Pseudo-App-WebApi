@@ -23,6 +23,68 @@ namespace Persistencia.Data
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
+            // Relacion Pais-Estado
+
+            modelBuilder.Entity<Pais>().
+            HasMany<Departamento>(e => e.Departamentos)
+            .WithOne(e => e.Pais)
+            .HasForeignKey(e => e.IdPaisFk);
+
+            // Relacion Estado-Ciudad
+
+            modelBuilder.Entity<Departamento>()
+            .HasMany<Ciudad>(e => e.Ciudades)
+            .WithOne(e => e.Departamento)
+            .HasForeignKey(e => e.IdDepartamentoFk);
+
+            // Relacion Persona-Matricula
+
+            modelBuilder.Entity<Persona>()
+            .HasMany<Matricula>(e => e.Matriculas)
+            .WithOne(e => e.Persona)
+            .HasForeignKey(e => e.IdPersonaFk);
+
+            // Relacion Matricula-Salon
+
+            modelBuilder.Entity<Salon>().
+            HasMany<Matricula>(e => e.Matriculas)
+            .WithOne(e => e.Salon)
+            .HasForeignKey(e => e.IdSalonFk);
+
+            // Relacion Persona-TipoPersona
+
+            modelBuilder.Entity<TipoPersona>()
+            .HasMany<Persona>(e => e.Personas)
+            .WithOne(e => e.TipoPersona)
+            .HasForeignKey(e => e.IdTipoPersonaFk);
+
+            // Relacion Persona-Genero
+
+            modelBuilder.Entity<Genero>()
+            .HasMany<Persona>(e => e.Personas)
+            .WithOne(e => e.Genero)
+            .HasForeignKey(e => e.IdGenereoFk);
+
+            // Relacion Persona-Direccion
+
+            modelBuilder.Entity<Persona>()
+            .HasMany<Direccion>(e => e.Direcciones)
+            .WithOne(e => e.Persona)
+            .HasForeignKey(e => e.IdPersonaFk);
+
+            // Relacion muchos a muchos TrainerPersona
+            modelBuilder.Entity<TrainerSalon>().HasKey(e => new { e.IdPersonaFk, e.IdSalonFk});
+
+            modelBuilder.Entity<TrainerSalon>()
+            .HasOne<Persona>(e => e.Persona)
+            .WithMany(e => e.TrainersSalones)
+            .HasForeignKey(e => e.IdPersonaFk);
+
+            modelBuilder.Entity<TrainerSalon>()
+            .HasOne<Salon>(e => e.Salon)
+            .WithMany(e => e.TrainersSalones)
+            .HasForeignKey(e => e.IdSalonFk);
+
         }
     }
 }

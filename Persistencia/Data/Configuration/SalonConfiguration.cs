@@ -10,5 +10,6 @@ public class SalonConfiguration : IEntityTypeConfiguration<Salon>
         builder.Property(e => e.NombreSalon)
         .IsRequired()
         .HasMaxLength(50);
+        
     }
 }

@@ -9,6 +9,6 @@ public class PaisConfiguration : IEntityTypeConfiguration<Pais>
         builder.ToTable("pais");
         builder.Property(e => e.NombrePais)
         .IsRequired()
-        .HasMaxLength(50);
+        .HasMaxLength(30);
     }
 }
