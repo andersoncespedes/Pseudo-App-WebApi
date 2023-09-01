@@ -10,21 +10,32 @@ namespace Aplication.UnitOfWork
 {
     public class UnitOfWork : IUnitOfWork, IDisposable
     {
-        private PaisRepostory paisRepostory;
-        private readonly ApiContext context;
+        private PaisRepostory _paisRepostory;
+        private DepartamentoRepository _departamentoRepository;
+        private readonly ApiContext _context;
         public UnitOfWork(ApiContext context){
-            this.context = context;
+            _context = context;
         }
         public IPaisInterface Paises {get{
-            if(paisRepostory == null){
-                paisRepostory = new PaisRepostory(this.context);
+            if(_paisRepostory == null){
+                _paisRepostory = new PaisRepostory(_context);
             }
-            return paisRepostory;
+            return _paisRepostory;
         }}
-
+        public IDepartamentoInterface Departamentos {
+            get{
+                if(_departamentoRepository == null){
+                    _departamentoRepository = new DepartamentoRepository(_context);
+                }
+                return _departamentoRepository;
+            }
+        }
+        public Task<int> Save(){
+            return _context.SaveChangesAsync();   
+        }
         public void Dispose()
         {
-            this.context.Dispose();
+            _context.Dispose();
         }
     }
 }

@@ -2,6 +2,7 @@ using Dominio.Entities;
 using Dominio.Interfaces;
 using Persistencia.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
 namespace Aplication.Repository;
 
 public class PaisRepostory : GenericRepository<Pais>, IPaisInterface
@@ -16,5 +17,11 @@ public class PaisRepostory : GenericRepository<Pais>, IPaisInterface
     }
     public override async Task<Pais> GetById(int id){
         return await _context.Set<Pais>().FindAsync(id);
+    }
+    public override async void Add(Pais entity){
+        _context.Set<Pais>().Add(entity);
+    }
+    public override void Remove(Pais entity){
+        _context.Set<Pais>().Remove(entity);
     }
 }

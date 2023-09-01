@@ -19,6 +19,9 @@ public static class ServiceAppExtension
     }
     public static void AddAplicationService(this IServiceCollection services){
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+        
+    }
+    public static void ConfigureJson(this IServiceCollection services){
         services.AddControllersWithViews()
         .AddNewtonsoftJson(options =>
         options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
