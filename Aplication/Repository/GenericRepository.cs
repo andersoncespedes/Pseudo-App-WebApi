@@ -27,7 +27,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     public virtual void AddRange(IEnumerable<T> entities){
         _context.Set<T>().AddRange(entities);
     }
-    public virtual void Update(T entity){
+    public virtual void Update(T entity, T viejo){
         _context.Set<T>().Update(entity);
     }
     public virtual void RemoveRange (IEnumerable<T> entities){

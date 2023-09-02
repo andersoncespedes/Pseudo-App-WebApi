@@ -1,9 +1,8 @@
-using Aplication.Repository;
-using Dominio.Entities;
 using Dominio.Interfaces;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
 using Aplication.UnitOfWork;
+using AspNetCoreRateLimit;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Versioning;
 namespace API.Extensions;
 
 public static class ServiceAppExtension
@@ -26,6 +25,30 @@ public static class ServiceAppExtension
         .AddNewtonsoftJson(options =>
         options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
     );
+    }
+    public static void ConfigureRateLimit(this IServiceCollection services){
+        services.AddMemoryCache();
+        services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
+        services.AddInMemoryRateLimiting();
+        services.Configure<IpRateLimitOptions>(options => {
+            options.EnableEndpointRateLimiting = true;
+            options.StackBlockedRequests = false;
+            options.HttpStatusCode = 429;
+            options.RealIpHeader = "X-Real-IP";
+            options.GeneralRules = new List<RateLimitRule>(){
+                new RateLimitRule {
+                   Endpoint = "*",
+                   Period = "10s",
+                   Limit = 2 
+                }
+            };
+        });
+    }
+    public static void ConfigureApiVersioning(this IServiceCollection services){
+        services.AddApiVersioning( options => {
+            options.DefaultApiVersion = new ApiVersion(1,0);
+            options.AssumeDefaultVersionWhenUnspecified = true;
+        });
     }
     
 }

@@ -25,4 +25,13 @@ public class DepartamentoRepository : GenericRepository<Departamento>, IDepartam
     public override void Add(Departamento departamento){
         _context.Set<Departamento>().Add(departamento);
     }
+    public override void Remove(Departamento entity)
+    {
+        _context.Set<Departamento>().Remove(entity);
+    }
+    public override void Update(Departamento entity, Departamento viejo)
+    {
+        viejo.NombreDepartamento = entity.NombreDepartamento;
+        viejo.IdPaisFk = entity.IdPaisFk;
+    }
 }

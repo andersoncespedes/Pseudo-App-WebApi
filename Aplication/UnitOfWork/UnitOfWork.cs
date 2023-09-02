@@ -5,13 +5,13 @@ using System.Threading.Tasks;
 using Aplication.Repository;
 using Dominio.Interfaces;
 using Persistencia.Data;
-
 namespace Aplication.UnitOfWork
 {
     public class UnitOfWork : IUnitOfWork, IDisposable
     {
         private PaisRepostory _paisRepostory;
         private DepartamentoRepository _departamentoRepository;
+        private CiudadRepository _ciudadRepository;
         private readonly ApiContext _context;
         public UnitOfWork(ApiContext context){
             _context = context;
@@ -28,6 +28,14 @@ namespace Aplication.UnitOfWork
                     _departamentoRepository = new DepartamentoRepository(_context);
                 }
                 return _departamentoRepository;
+            }
+        }
+        public ICiudadInterface Ciudades{
+            get{
+                if(_ciudadRepository == null){
+                    _ciudadRepository = new CiudadRepository(_context);
+                }
+                return _ciudadRepository;
             }
         }
         public Task<int> Save(){

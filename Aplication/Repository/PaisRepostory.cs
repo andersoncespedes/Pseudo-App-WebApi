@@ -2,12 +2,14 @@ using Dominio.Entities;
 using Dominio.Interfaces;
 using Persistencia.Data;
 using Microsoft.EntityFrameworkCore;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 namespace Aplication.Repository;
 
 public class PaisRepostory : GenericRepository<Pais>, IPaisInterface
 {
     private readonly ApiContext _context;
+    
     public PaisRepostory(ApiContext context) : base(context)
     {
         _context = context;
